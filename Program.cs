@@ -1,11 +1,13 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AdventOfCode {
     public class Program {
-        public static void Main() => Console.WriteLine(Day2(File.ReadAllLines("input/day2.txt")));
+        public static void Main() => Console.WriteLine(Day3(File.ReadAllLines("input/day3.txt")));
 
         public static int Day1(string[] rawInput) {
 			int[] input = rawInput.Select(int.Parse).ToArray();
@@ -45,6 +47,32 @@ namespace AdventOfCode {
 				a += cmd[0] == "up" ? int.Parse(cmd[1])*-1 : cmd[0] == "down" ? int.Parse(cmd[1]) : 0;
 			}
 			return h*d;
+		}
+
+		public static int Day3(string[] rawInput) {
+			//var bits = new BitArray(12);
+			int[] result = new int[2];
+
+			for (int r = 0; r < 2; r++) {
+				string[] input = rawInput;
+				for (int i = 0; i < 12; i++) {
+					// Part 1: 1540244
+					// if current bit row has more 1s, set current bit
+					// bits[11-i] = rawInput.Where(binary => binary[i] == '1').Count() > rawInput.Where(binary => binary[i] == '0').Count() ? true : false;
+					// Part 2:
+					int o = input.Where(binary => binary[i] == '1').Count(), z = input.Where(binary => binary[i] == '0').Count();
+					if ((input = input.Where(binary => binary[i] == (o > z || o == z ? r == 0 ? '0':'1' : r == 0 ? '1':'0')).ToArray()).Count() == 1) {
+						result[r] = Convert.ToInt32(input.First(), 2);
+						break;
+					}
+				}
+			}
+			
+			// (Part 1) convert bits to int and invert
+			/*bits.CopyTo(result, 0); // gamma
+			bits.Not();
+			bits.CopyTo(result, 1);*/ // epsilon
+			return result[0] * result[1];
 		}
     }
 }
