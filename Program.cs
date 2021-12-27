@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AdventOfCode {
     public class Program {
-        public static void Main() => Console.WriteLine(Day4(File.ReadAllLines("input/day4.txt")));
+        public static void Main() => Console.WriteLine(Day6(File.ReadAllLines("input/day6.txt")));
 
         public static int Day1(string[] rawInput) {
 			int[] input = rawInput.Select(int.Parse).ToArray();
@@ -105,6 +105,22 @@ namespace AdventOfCode {
 			}
 			// Part 2: 17884
 			return winningBoards.Last().Value;
+		}
+
+		public static long Day6(string[] rawInput) {
+			// Part 1: 349549
+			//const int days = 80;
+			// Part 2: 1589590444365
+			const int days = 256;
+			var fishCount = new long[9];
+
+			foreach (var ch in rawInput[0].Split(','))
+				fishCount[int.Parse(ch)]++;
+
+			for (var t = 0; t < days; t++)
+				fishCount[(t + 7) % 9] += fishCount[t % 9];
+
+			return fishCount.Sum();
 		}
     }
 }
